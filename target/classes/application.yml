@@ -2,5 +2,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://localhost:3306/testdemo?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://8.131.238.11:3306/coursedesign?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     driver-class-name: com.mysql.cj.jdbc.Driver
+  thymeleaf:
+    cache: false

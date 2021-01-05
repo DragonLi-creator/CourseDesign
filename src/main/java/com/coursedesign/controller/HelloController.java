@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HelloController {
     @RequestMapping("/test")
     public String test() {
+        String s = "D:\\CourseDesign\\picture\\UserPicture";
         return "test";
     }
 }
