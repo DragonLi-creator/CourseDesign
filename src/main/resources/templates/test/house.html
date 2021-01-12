@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}"  media="all">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/admin/admin.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/Scrollbar/jquery.scrollbar.css}">
+    <script type="text/javascript" th:src="@{/lib/admin/jquery-1.9.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/Scrollbar/jquery.scrollBar.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/admin/admin.js}"></script>
+</head>
+<body class="layui-body-content">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{index::topbar}"></div>
+</div>
+<div class="layui-layout">
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
+
+<script type="text/html" id="toolbarDemo">
+
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    <form action="/search" class="layui-inline" style="float:right;height:29px;">
+        <input name="param" value="" type="text" id="title" style="width:200px;float:left;height:30px;" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        <button type="submit" class="layui-btn layui-btn-sm" >搜索</button>
+    </form>
+<!--    <div class="layui-inline" style="float:right;height:29px;" title="搜索" lay-event="LAYTABLE_SEARCH"><i class="layui-icon layui-icon-search"></i></div>-->
+
+</script>
+
+<script type="text/html" id="barDemo">
+    <a th:href="@{/updateHousePage.html}" class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a th:href="@{/deleteHousePage.html}" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+<script>
+    //注意：element未作封装处理，使用layui.use引用
+    layui.use(['element'], function () {
+        var element = layui.element;
+        console.log('触发了layui.element');
+
+    });
+    function cleancache(){
+        var a = hg.load(function(){
+            var that = this;
+            setTimeout(function(){
+                //that.close(); //关闭加载层
+                a.close();
+                hg.msghide('清除服务器缓存成功.');
+            },2000);
+        })
+    }
+</script>
+<script type="text/javascript" th:src="@{/lib/admin/jquery-1.9.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/lib/Scrollbar/jquery.scrollBar.js}"></script>
+
+<script type="text/javascript">
+    function releaseTime (v){
+        var date = new Date(v);
+        var y = date.getFullYear();
+        var m = date.getMonth()+1;
+        m = m<10?'0'+m:m;
+        var d = date.getDate();
+        d = d<10?("0"+d):d;
+        var h = date.getHours();
+        h = h<10?("0"+h):h;
+        var M = date.getMinutes();
+        M = M<10?("0"+M):M;
+        var str = y+"-"+m+"-"+d+" "+h+":"+M;
+        return str;
+    }
+</script>
+
+
+<script>
+    layui.use('table', function(){
+        // var title = document.getElementById("title").value;
+        var table = layui.table;
+        table.render({
+            elem: '#test'
+            ,url:'http://localhost:8080/jsonHouse'
+            ,toolbar: '#toolbarDemo'
+            ,width: '100%'
+            ,height: '700px'
+            ,title: '租房信息'
+            ,totalRow: true
+            ,cols: [
+                [
+                    {type: "checkbox", width: 50},
+                    {field: 'id', width: 80, title: 'ID', sort: true},
+                    {field: 'hostName', width: 80, title: '用户名'},
+                    {field: 'address', width: 110, title: '房东住址', sort: true},
+                    {field: 'houseResource', width: 80, title: '房型', sort: true},
+                    {field: 'houseType', width: 120, title: '户型',sort: true},
+                    {field: 'addressName', width: 90, title: '房屋区域', sort: true},
+                    {field: 'price', width: 80, title: '价格', sort: true},
+                    {field: 'area', width: 110, title: '房屋面积', sort: true},
+                    {field: 'tel', title: '房东电话', minWidth: 130},
+                    {field: 'content', width: 130, title: '备注', sort: true},
+                    {field: 'releaseTime', width: 120, title: '发布时间', sort: true,templet :function (row){
+                        return releaseTime(row.releaseTime);
+                    }},
+                    {title: '操作', minWidth: 150, toolbar: '#barDemo', align: "center"}
+                ]
+            ]
+            ,page: true
+        });
+
+        //工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选')
+                    break;
+                case 'LAYTABLE_SEARCH':
+                    tableIns.reload(
+                        {
+                            where: {
+                                title: $("#title").val()
+                            }
+                            ,page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        }
+                    );
+                    break;
+            };
+        });
+
+    });
+</script>
+
+</body>
+</html>

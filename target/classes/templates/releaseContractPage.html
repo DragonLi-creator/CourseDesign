@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="hg-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link th:href="@{/lib/layui/css/layui.css}" rel="stylesheet"/>
+    <link th:href="@{/lib/step-lay/step.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/admin/admin.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/Scrollbar/jquery.scrollbar.css}">
+    <script type="text/javascript" th:src="@{/lib/admin/jquery-1.9.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/Scrollbar/jquery.scrollBar.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/admin/admin.js}"></script>
+</head>
+
+<body class="layui-body-content">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{index::topbar}"></div>
+</div>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">签订合同</div>
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="/releaseContract" lay-filter="component-form-group">
+
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">出租房(甲方)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="hostName" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">身份证号</label>
+                        <div class="layui-input-inline" style="width: 300px">
+                            <input type="text" name="hostCard" lay-verify="required|identity" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">承租房(乙方)</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="rentName" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">身份证号</label>
+                        <div class="layui-input-inline" style="width: 300px">
+                            <input type="text" name="rentCard" lay-verify="required|identity" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+
+                <blockquote style="margin-top: auto">
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;甲、乙双方通过友好协商，就房屋租赁事宜达成协议如下：</div>
+                </blockquote>
+
+                <div class="layui-form-item" style="margin-top: 20px">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">起始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="startTime" id="date1" lay-verify="date" value="2021-01-01" placeholder="2020-01-01"  autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">到期时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="endTime" id="date2" lay-verify="date" value="2021-01-15" placeholder="2020-01-01" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">租赁期共：</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="days"  value="" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">天</div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="margin-top: 20px">
+                    <label class="layui-form-label">房屋编号:</label>
+                    <div class="layui-input-block" style="width: 300px">
+                        <input type="text" name="houseId" lay-verify="required|number" placeholder="请输入房屋编号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-form-text" style="margin-top: 20px" >
+                    <label class="layui-form-label">合同备注</label>
+                    <div class="layui-input-block">
+                        <textarea name="content" placeholder="请输入内容" class="layui-textarea"  style="width: 500px"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <div class="layui-footer" style="left: 0;padding: 10px 0;text-align: center;background-color: #fff;">
+                            <button class="layui-btn" type="submit" lay-filter="component-form-demo1">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#date1'
+        });
+        laydate.render({
+            elem: '#date2'
+        });
+
+        //创建一个编辑器
+        var signcontract = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        signcontract.verify({
+            title: function (value) {
+                if (value.length < 5) {
+                    return '标题至少得5个字符啊';
+                }
+            }
+            , pass: [
+                /^[\S]{6,12}$/
+                , '密码必须6到12位，且不能出现空格'
+            ],
+            content: function (value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+        //监听提交
+        signcontract.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+
+        //表单初始赋值
+        // signcontract.val('example', {
+        //     "username": "贤心" // "name": "value"
+        //     , "password": "123456"
+        //     , "interest": 1
+        //     , "like[write]": true //复选框选中状态
+        //     , "close": true //开关状态
+        //     , "sex": "女"
+        //     , "desc": "我爱 layui"
+        // })
+    });
+</script>
+
+<script>
+    // 自定义验证规则
+    hg.form.verify({
+        title: function(value){
+            if(value.length < 5){
+                return '标题至少得5个字符啊';
+            }
+        }
+        ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+        ,content: function(value){
+            layedit.sync(editIndex);
+        }
+    });
+    // 监听switch操作事件
+    hg.form.onswitch('component-form-switchTest',function(data){
+        hg.msg(data.elem.name+'开关checked：'+(data.elem.checked?'开启':'禁用'));
+        console.log(data.elem.checked);
+        console.log(data.othis);
+        layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis);
+    });
+    // 监听表单提交事件
+    hg.form.onsubmit('component-form-demo1', function (data) {
+        hg.msg(JSON.stringify(data));
+    });
+</script>
+
+</html>

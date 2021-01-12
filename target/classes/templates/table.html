@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="hg-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/lib/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/admin/admin.css}" media="all">
+    <link rel="stylesheet" th:href="@{/lib/Scrollbar/jquery.scrollbar.css}">
+    <script type="text/javascript" th:src="@{/lib/admin/jquery-1.9.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/Scrollbar/jquery.scrollBar.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/lib/admin/admin.js}"></script>
+</head>
+
+<body class="layui-body-content layui-layout-body" style="display: none;">
+<div class="layui-layout layui-layout-admin">
+    <div th:replace="~{index::topbar}"></div>
+    <div th:replace="~{index::sidebar}"></div>
+    <div class="layui-fluid layui-page-content">
+        <!--插入内容-->
+        <div class="">
+            <button class="layui-btn layui-btn-sm layui-btn-normal"><i
+                    class="layui-icon">&#xe654;</i>添加</button>
+            <button class="layui-btn layui-btn-sm layui-btn-warm" onclick="edit()"><i
+                    class="layui-icon">&#xe642;</i>修改</button>
+            <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="del()"><i
+                    class="layui-icon">&#xe640;</i>删除</button>
+            <button class="layui-btn layui-btn-sm layui-btn-normal" onclick="exportsall('test4')"><i
+                    class="layui-icon">&#xe601;</i>导出所有数据</button>
+        </div>
+    </div>
+</div>
+<script>
+    //注意：element未作封装处理，使用layui.use引用
+    layui.use(['element'], function () {
+        var element = layui.element;
+        console.log('触发了layui.element');
+
+    });
+    function cleancache(){
+        var a = hg.load(function(){
+            var that = this;
+            setTimeout(function(){
+                //that.close(); //关闭加载层
+                a.close();
+                hg.msghide('清除服务器缓存成功.');
+            },2000);
+        })
+    }
+</script>
+</body>
+
+</html>

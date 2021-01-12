@@ -1,15 +1,17 @@
 package com.coursedesign.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import java.sql.Timestamp;
 
-import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class House {
+    @TableId(type = IdType.AUTO)
     private int id;
     private String address;
     private String addressName;
@@ -18,11 +20,8 @@ public class House {
     private String houseType;
     private int price;
     private String payType;
-    private int floor;
+    private String tel;
     private int area;
-    private int renovation;
-    private String image;
     private String content;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date releaseTime;
+    private Timestamp releaseTime;
 }
