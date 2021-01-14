@@ -1,7 +1,6 @@
 package com.coursedesign.service.memberService;
 
 import com.coursedesign.entity.Notice;
-import com.coursedesign.mapper.AdminMapper;
 import com.coursedesign.mapper.MemberMapper;
 import com.coursedesign.service.contractService.ContractService;
 import com.coursedesign.service.houseService.HouseService;
@@ -17,16 +16,6 @@ public class LoginService {
     public boolean login(String userName,String userPassword){
         String password = memberMapper.getPasswordByName(userName);
         // 如果密码为空
-        if (password == null) {
-            return false;
-        }
-        return password.equals(userPassword);
-    }
-
-    @Autowired
-    AdminMapper adminMapper;
-    public boolean loginAdmin(String userName,String userPassword){
-        String password = adminMapper.getPasswordByName(userName);
         if (password == null) {
             return false;
         }

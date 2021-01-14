@@ -28,4 +28,12 @@ public class ContractService {
     public int getContractCount() {
         return contractMapper.getContractCount();
     }
+
+    public String getContractHostNameById(int id){
+        return contractMapper.getContractHostNameById(id);
+    }
+
+    public String getContractRentNameById(int id){
+        return contractMapper.getContractRentNameById(id);
+    }
 }

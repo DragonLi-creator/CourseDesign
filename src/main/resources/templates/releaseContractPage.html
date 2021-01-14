@@ -21,42 +21,46 @@
 </head>
 
 <body class="layui-body-content">
+<style>
+    label.xrequired:after {
+        content: '* ';
+        color: red;
+    }
+</style>
 <div class="layui-layout layui-layout-admin">
     <div th:replace="~{index::topbar}"></div>
 </div>
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-header">签订合同</div>
-        <div class="layui-card-body" style="padding: 15px;">
+        <div class="layui-card-body" style="padding: 15px; margin-left: 230px">
             <form class="layui-form" action="/releaseContract" lay-filter="component-form-group">
-
-
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">出租房(甲方)</label>
+                        <label class="layui-form-label xrequired">出租房(甲方)</label>
                         <div class="layui-input-inline">
                             <input type="text" name="hostName" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">身份证号</label>
+                        <label class="layui-form-label xrequired">身份证号</label>
                         <div class="layui-input-inline" style="width: 300px">
-                            <input type="text" name="hostCard" lay-verify="required|identity" autocomplete="off" class="layui-input">
+                            <input type="text" name="hostCard" lay-verify="required|identity" pattern="/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label">承租房(乙方)</label>
+                        <label class="layui-form-label xrequired">承租房(乙方)</label>
                         <div class="layui-input-inline">
                             <input type="text" name="rentName" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">身份证号</label>
+                        <label class="layui-form-label xrequired">身份证号</label>
                         <div class="layui-input-inline" style="width: 300px">
-                            <input type="text" name="rentCard" lay-verify="required|identity" autocomplete="off" class="layui-input">
+                            <input type="text" name="rentCard" lay-verify="required|identity" pattern="/^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/"autocomplete="off" class="layui-input">
                         </div>
                     </div>
                 </div>
@@ -67,13 +71,13 @@
 
                 <div class="layui-form-item" style="margin-top: 20px">
                     <div class="layui-inline">
-                        <label class="layui-form-label">起始时间</label>
+                        <label class="layui-form-label xrequired">起始时间</label>
                         <div class="layui-input-inline">
                             <input type="text" name="startTime" id="date1" lay-verify="date" value="2021-01-01" placeholder="2020-01-01"  autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">到期时间</label>
+                        <label class="layui-form-label xrequired">到期时间</label>
                         <div class="layui-input-inline">
                             <input type="text" name="endTime" id="date2" lay-verify="date" value="2021-01-15" placeholder="2020-01-01" autocomplete="off" class="layui-input">
                         </div>
@@ -88,14 +92,14 @@
                 </div>
 
                 <div class="layui-form-item" style="margin-top: 20px">
-                    <label class="layui-form-label">房屋编号:</label>
+                    <label class="layui-form-label xrequired">房屋编号:</label>
                     <div class="layui-input-block" style="width: 300px">
                         <input type="text" name="houseId" lay-verify="required|number" placeholder="请输入房屋编号" autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
-                <div class="layui-form-item layui-form-text" style="margin-top: 20px" >
-                    <label class="layui-form-label">合同备注</label>
+                <div class="layui-form-item layui-form-text" style="margin-top: 30px" >
+                    <label class="layui-form-label xrequired">合同备注</label>
                     <div class="layui-input-block">
                         <textarea name="content" placeholder="请输入内容" class="layui-textarea"  style="width: 500px"></textarea>
                     </div>

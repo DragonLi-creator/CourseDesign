@@ -28,10 +28,7 @@ public class SignUpController {
             CurrentUser.username = username;
             CurrentUser.id = signUpService.getIdByName(username);
             CurrentUser.password = password;
-            // 增加新用户的时候，notice更新
-//            Notice notice = noticeService.getNotice();
-//            model.addAttribute("notice",notice);
-            return "index";
+            return "redirect:/index";
         }else {
             model.addAttribute("msg","注册有误");
             return "login";

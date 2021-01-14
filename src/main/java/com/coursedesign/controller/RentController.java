@@ -37,7 +37,10 @@ public class RentController {
     HouseResourceService houseResourceService;
 
 
-
+    /**
+     * 返回rent实体类的json格式
+     * @return
+     */
     @RequestMapping("/jsonRent")
     @ResponseBody
     public String jsonRent(){
@@ -89,12 +92,25 @@ public class RentController {
 
     }
 
-    // 删除rent
+    /**
+     * 去往删除求租信息的页面
+     * @param model
+     * @return
+     */
     @RequestMapping("/deleteRentPage.html")
     public String deleteRentPage(Model model){
         model.addAttribute("currentUsername", CurrentUser.username);
         return "deleteRentPage";
     }
+
+    /**
+     * 提交删除请求
+     * @param id
+     * @param people
+     * @param password
+     * @param model
+     * @return
+     */
     @RequestMapping("/deleteRent")
     public String deleteRent(@RequestParam("id")int id,@RequestParam("people")String people,
                              @RequestParam("password")String password,Model model){
@@ -110,7 +126,11 @@ public class RentController {
 
     }
 
-    // 发布新的求租信息
+    /**
+     * 去往发布求租信息的页面
+     * @param model
+     * @return
+     */
     @RequestMapping("/releaseRentPage")
     public String rentHousePage(Model model){
         List<Address> allAddress = addressService.getAllAddress();
@@ -123,24 +143,29 @@ public class RentController {
         return "releaseRentPage";
     }
 
+    /**
+     * 提交发布求租信息的请求
+     * @param addressName
+     * @param houseResource
+     * @param price
+     * @param houseType
+     * @param content
+     * @param people
+     * @return
+     */
     @RequestMapping("/releaseRent")
     public String insertRent(@RequestParam("addressName")String addressName,@RequestParam("houseResource")String houseResource,
                              @RequestParam("price")int price,@RequestParam("houseType")String houseType,
-                             @RequestParam("content")String content, @RequestParam("people")String people,
-                             Model model){
+                             @RequestParam("content")String content, @RequestParam("people")String people
+                             ){
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         boolean flag = rentService.insertRent(addressName,houseResource,price,houseType,content,people,timestamp);
         if (flag) {
-            // 发布新求租信息时更新notice
-//            noticeService.updateRentCount();
             return "redirect:/rent.html";
         }else {
             return "404";
         }
 
     }
-
-
-
 
 }

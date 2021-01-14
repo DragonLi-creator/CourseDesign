@@ -29,7 +29,12 @@ public interface ContractMapper extends BaseMapper<Contract> {
     @Select("select count(*) from contract")
     int getContractCount();
 
-    // 分页查询
     @Select("select * from contract limit #{limit1},#{limit2};")
     List<House> getContractPages(int limit1, int limit2);
+
+    @Select("select host_name from contract where id = #{id}")
+    String getContractHostNameById(int id);
+
+    @Select("select rent_name from contract where id = #{id}")
+    String getContractRentNameById(int id);
 }
