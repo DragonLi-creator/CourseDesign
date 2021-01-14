@@ -2,8 +2,13 @@ package com.coursedesign.controller;
 
 import com.coursedesign.entity.Address;
 import com.coursedesign.entity.Member;
+import com.coursedesign.entity.Notice;
+import com.coursedesign.service.contractService.ContractService;
 import com.coursedesign.service.houseService.AddressService;
+import com.coursedesign.service.houseService.HouseService;
 import com.coursedesign.service.memberService.MemberService;
+import com.coursedesign.service.noticeService.NoticeService;
+import com.coursedesign.service.rentService.RentService;
 import com.coursedesign.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +21,33 @@ import java.util.List;
 public class IndexController {
     @Autowired
     AddressService addressService;
-
     @Autowired
     MemberService memberService;
+    @Autowired
+    NoticeService noticeService;
+    @Autowired
+    HouseService houseService;
+    @Autowired
+    RentService rentService;
+    @Autowired
+    ContractService contractService;
 
 
+    /**
+     * 去往首页 并携带一些值
+     * @param model
+     * @return
+     */
     @RequestMapping(value = {"/index","/index.html"})
     public String index(Model model) {
+        // 得到当前数据库中的房源数、求租数，合同数以及用户数,并更新到notice表
+        int houseCount = houseService.getHouseCount();
+        int rentCount = rentService.getRentCount();
+        int contractCount = contractService.getContractCount();
+        int memberCount = memberService.getMemberCount();
+        noticeService.updateNotice(houseCount,rentCount,memberCount,contractCount);
+        Notice notice = noticeService.getNotice();
+        model.addAttribute("notice",notice);
         model.addAttribute("currentUsername", CurrentUser.username);
         return "index";
     }
@@ -39,9 +64,7 @@ public class IndexController {
             member = new Member();
         }else {
             member = memberService.getMemberByName(CurrentUser.username);
-//            System.out.println(CurrentUser.username);
             String sex = member.getSex()==1?"男":"女";
-
             model.addAttribute("sex",sex);
         }
         model.addAttribute("member",member);
@@ -91,22 +114,34 @@ public class IndexController {
         return "rent";
     }
 
+    /**
+     * 跳往发布求租信息的页面
+     * @return
+     */
     @RequestMapping("/releaseRentPage.html")
     public String releaseRentPage(){
         return "redirect:/releaseRentPage";
     }
 
+    /**
+     * 跳往查看合同的页面
+     * @param model
+     * @return
+     */
     @RequestMapping("/contract.html")
     public String contract(Model model){
         model.addAttribute("currentUsername", CurrentUser.username);
         return "contract";
     }
 
+    /**
+     * 跳往签订合同的页面
+     * @return
+     */
     @RequestMapping("/releaseContractPage.html")
     public String releaseContractPage(){
         return "redirect:/releaseContractPage";
     }
-
 
     @RequestMapping("/404")
     public String str404(Model model){

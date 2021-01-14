@@ -31,6 +31,8 @@ public interface MemberMapper extends BaseMapper<Member> {
 
     @Select("select count(*) from member")
     int getMemberCount();
+
     @Select("select * from member where name = #{name}")
     Member getMemberByName(String name);
+
 }

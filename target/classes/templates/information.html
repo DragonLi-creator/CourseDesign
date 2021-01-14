@@ -31,7 +31,7 @@ color: red;
     <legend>完善个人信息</legend>
 </fieldset>
 
-<form class="layui-form" action="/updateMember" method="post">
+<form class="layui-form" action="/updateMember" method="post" style="margin-left: 200px">
     <p th:text="${msg}" ></p>
     <div class="layui-form-item" style="margin-left: 250px">
         <div class="layui-inline">
@@ -50,14 +50,14 @@ color: red;
     <div class="layui-form-item " style="margin-left: 250px">
         <label class="layui-form-label xrequired">邮箱</label>
         <div class="layui-input-block" style="width: 500px">
-            <input type="email" name="mail" th:value="${member.getMail()}" lay-verify="email|required" autocomplete="off" placeholder="请输入你的邮箱" class="layui-input">
+            <input type="email" name="mail" th:value="${member.getMail()}" lay-verify="email|required" pattern=" /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/" autocomplete="off" placeholder="请输入你的邮箱" class="layui-input">
         </div>
     </div>
 
     <div class="layui-form-item " style="margin-left: 250px">
         <label class="layui-form-label xrequired">性别</label>
         <div class="layui-input-block" style="width: 500px">
-            <input type="text" name="sex" th:value="${sex}" lay-verify="text|required" autocomplete="off" placeholder="请输入你的邮箱" class="layui-input">
+            <input type="text" name="sex" th:value="${sex}" lay-verify="text|required"  pattern="^[\u4E00-\uFA29\uE7C7-\uE7F3]+-[男女]$" autocomplete="off" placeholder="请输入你的性别" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item " style="margin-left: 250px">
@@ -69,7 +69,7 @@ color: red;
     <div class="layui-form-item" style="margin-left: 250px">
             <label class="layui-form-label">所在区域</label>
             <div class="layui-input-inline">
-                <select name="address" lay-filter="aihao" lay-search="">
+                <select name="address" lay-filter="aihao">
                     <option th:each="address:${allAddress}" th:text="${address.getName()}" th:value="${member.getAddress()}"></option>
                 </select>
             </div>

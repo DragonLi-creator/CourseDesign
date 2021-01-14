@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NoticeMapper extends BaseMapper<Notice> {
-    @Update("update notice set house_count = #{house_count},set rent_count = #{rent_count}," +
-            "set member_count = #{member_count},set contract_count = #{contract_count} where id = 1")
+    @Update("update notice set house_count = #{house_count},rent_count = #{rent_count}," +
+            "member_count = #{member_count},contract_count = #{contract_count} where id = 1")
     boolean updateNotice(int house_count,int rent_count,int member_count,int contract_count);
 
     @Update("update notice set rent_count = rent_count + 1 where id = 1")

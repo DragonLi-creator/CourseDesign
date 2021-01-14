@@ -14,7 +14,14 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    // 修改个人密码
+    /**
+     * 修改个人密码
+     * @param oldPassword
+     * @param password1
+     * @param password2
+     * @param model
+     * @return
+     */
     @RequestMapping("/updateMemberPassword")
     public String updateMemberPassword(@RequestParam("oldPassword")String oldPassword,
                                        @RequestParam("password1")String password1,
@@ -30,7 +37,18 @@ public class MemberController {
         return "index";
     }
 
-    // 修改个人信息
+    /**
+     * 修改个人信息
+     * @param name
+     * @param sex
+     * @param tel
+     * @param age
+     * @param mail
+     * @param address
+     * @param card
+     * @param model
+     * @return
+     */
     @RequestMapping("/updateMember")
     public String updateMember(@RequestParam("name")String name,
                                @RequestParam("sex")String sex,

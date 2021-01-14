@@ -15,5 +15,5 @@ public class Notice {
     private int houseCount;
     private int rentCount;
     private int memberCount;
-    private int contrantCount;
+    private int contractCount;
 }

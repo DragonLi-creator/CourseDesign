@@ -4,8 +4,8 @@ import com.coursedesign.entity.*;
 import com.coursedesign.service.houseService.*;
 import com.coursedesign.service.noticeService.NoticeService;
 import com.coursedesign.utils.CurrentUser;
-import com.coursedesign.utils.FileNameUtils;
 import com.coursedesign.utils.JsonFormat;
+import com.coursedesign.utils.TypeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -35,10 +34,17 @@ public class HouseController {
     HouseTypeService houseTypeService;
     @Autowired
     HouseResourceService houseResourceService;
+    @Autowired
+    TypeUtil typeUtil;
     @Value("${image}")
     String path;
 
 
+    /**
+     * 去往发布房源信息的页面，并动态更新选项参数
+     * @param model
+     * @return
+     */
     @RequestMapping("/releaseHousePage")
     public String index(Model model){
         List<PayType> allPayType = payTypeService.getAllPayType();
@@ -54,7 +60,20 @@ public class HouseController {
     }
 
 
-    // 发布房源
+    /**
+     * 发布新的房源，以下是form变淡携带的参数
+     * @param hostName
+     * @param tel
+     * @param payType
+     * @param addressName
+     * @param address
+     * @param area
+     * @param price
+     * @param houseResourceType
+     * @param houseType
+     * @param content
+     * @return
+     */
     @RequestMapping("/releaseHouse")
     public String releaseHouse(@RequestParam("hostName") String hostName, @RequestParam("tel") String tel,
                         @RequestParam("payType") String payType, @RequestParam("addressName") String addressName,
@@ -115,7 +134,11 @@ public class HouseController {
         return "";
     }
 
-    // 修改房源信息
+    /**
+     * 去往修改房源信息的页面，并动态更新选项参数
+     * @param model
+     * @return
+     */
     @RequestMapping("/updateHousePage.html")
     public String updateHouse(Model model){
         List<PayType> allPayType = payTypeService.getAllPayType();
@@ -130,7 +153,22 @@ public class HouseController {
         return "updateHousePage";
     }
 
-    // 修改房源页面
+    /**
+     * 更新房源信息
+     * @param hostName
+     * @param tel
+     * @param payType
+     * @param addressName
+     * @param address
+     * @param area
+     * @param price
+     * @param houseResourceType
+     * @param houseType
+     * @param content
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/updateHouse")
     public String updateHousePage(@RequestParam("hostName") String hostName,@RequestParam("tel") String tel,
                                   @RequestParam("payType") String payType, @RequestParam("addressName") String addressName,
@@ -165,31 +203,44 @@ public class HouseController {
 
     }
 
-    // 删除房源
+    /**
+     * 删除房源
+     * @param model
+     * @return
+     */
     @RequestMapping("/deleteHousePage.html")
     public String deleteHousePage(Model model){
         model.addAttribute("currentUsername", CurrentUser.username);
         return "deleteHousePage";
     }
 
+    /**
+     * 提交删除房源的请求
+     * @param id
+     * @param hostName
+     * @param password
+     * @param model
+     * @return
+     */
     @RequestMapping("/deleteHouse")
     public String deleteHouse(@RequestParam("id")int id,@RequestParam("hostName")String hostName,
                               @RequestParam("password")String password,Model model){
         String host_name = houseService.getHostNameById(id);
         if (host_name.equals(CurrentUser.username)&&password.equals(CurrentUser.password)){
             houseService.deleteHouse(id);
-            return "redirect:/house";
+            return "redirect:/house.html";
         }else {
             model.addAttribute("msg","您不是该房源的发布者，或者密码错误！");
             model.addAttribute("currentUsername", CurrentUser.username);
             return "deleteHousePage";
         }
     }
-    @RequestMapping("/search")
-    public String search(@RequestParam("param")String param,Model model){
-        model.addAttribute("param",param);
-        return "house";
-    }
+//    @RequestMapping("/search")
+//    public String search(@RequestParam("param")String param,Model model){
+//        return "redirect:/jsonHouse/param";
+//        model.addAttribute("param",param);
+//        return "redirect:/jsonHouse/param";
+//    }
 
     @RequestMapping("/jsonHouseByHouseType/{param}")
     @ResponseBody
@@ -198,18 +249,38 @@ public class HouseController {
         return JsonFormat.getHouseJson(list,3);
     }
 
+//
+//    /**
+//     * 返回House实体类的json格式
+//     * @return
+//     */
+//    @RequestMapping("/jsonHouse/{param}")
+//    @ResponseBody
+//    public String jsonHouse(@PathVariable("param")String param) {
+//        List<House> list;
+//
+//        String[] res = typeUtil.getType(param);
+//        if ("houseType".equals(res[0])) {
+//            list = houseService.getHouseByHouseType(res[1]);
+//            return JsonFormat.getHouseJson(list, 3);
+//        }
+//        list = houseService.getAllHouse();
+//        return JsonFormat.getHouseJson(list,3);
+//    }
+
+
+
+    /**
+     * 返回House实体类的json格式
+     * @return
+     */
     @RequestMapping("/jsonHouse")
     @ResponseBody
     public String jsonHouse() {
-//        String param = model.getAttribute("param").toString();
-        List<House> list  = houseService.getAllHouse();;
-//        if (param.equals("")){
-//            list = houseService.getAllHouse();
-//        }else {
-//            list = houseService.getHouseByHouseType(param);
-//        }
-
-        return JsonFormat.getHouseJson(list,3);
+        List<House> list;
+        list = houseService.getAllHouse();
+        int count = houseService.getHouseCount();
+        return JsonFormat.getHouseJson(list,count);
     }
 
 }

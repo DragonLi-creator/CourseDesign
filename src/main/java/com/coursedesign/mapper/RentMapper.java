@@ -43,7 +43,16 @@ public interface RentMapper extends BaseMapper<Rent> {
 
     @Select("select people from rent where id = #{id}")
     String getPeopleById(int id);
-    // 分页查询
+
+    @Select("select * from rent where address_name = #{address_name}")
+    List<Rent> getRentByAddressName(String address_name);
+
+    @Select("select * from rent where house_type = #{house_type}")
+    List<Rent> getRentByHouseType(String house_type);
+
+    @Select("select * from rent where house_resource = #{house_resource}")
+    List<Rent> getRentByHouseResource(String house_resource);
+
     @Select("select * from rent limit #{limit1},#{limit2};")
-    List<House> getRentPages(int limit1, int limit2);
+    List<Rent> getRentPages(int limit1, int limit2);
 }
